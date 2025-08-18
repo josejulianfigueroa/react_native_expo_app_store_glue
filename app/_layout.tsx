@@ -1,38 +1,37 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import "@/global.css";
-import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/components/useColorScheme';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+import { useColorScheme} from 'nativewind';
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import "@/global.css";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+export default function RootLayout() {
+
+  const { colorScheme } = useColorScheme();
+ 
+  const [loaded] = useFonts({
+    // SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    KanitRegular: require('../assets/fonts/Kanit-Regular.ttf'),
+    KanitBold: require('../assets/fonts/Kanit-Bold.ttf'),
+    KanitThin: require('../assets/fonts/Kanit-Thin.ttf'),
+  });
 
   useEffect(() => {
     if (loaded) {
@@ -44,18 +43,23 @@ export default function RootLayout() {
     return null;
   }
 
-  return <GluestackUIProvider mode="light"><RootLayoutNav /></GluestackUIProvider>;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <GluestackUIProvider mode="light"><ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        </Stack>
-      </ThemeProvider></GluestackUIProvider>
+  <GestureHandlerRootView
+      style={{ flex: 1 }}
+    >
+      <QueryClientProvider client={queryClient}>
+       
+            <GluestackUIProvider>
+            <Slot />
+            </GluestackUIProvider>
+     
+      </QueryClientProvider>
+      </GestureHandlerRootView>
   );
-}
+
+}/*
+ <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+   </ThemeProvider>
+   */
