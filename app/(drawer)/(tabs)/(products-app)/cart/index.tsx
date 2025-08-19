@@ -114,51 +114,56 @@ export default function CartScreen() {
       contentContainerClassName="gap-2 max-w-[960px] w-full mx-auto p-2"
       renderItem={({ item }) => (
 
-        <HStack className="bg-white p-3">
-          <Animated.Image
-            source={{ uri: item.image }}
-            style={{ height: 60, width: 60, paddingRight: 20, opacity: animatedOpacity }}
-            onLoadEnd={() => {
-              fadeIn({});
-            } } />
-      
-     
-          <VStack space="lg" style={{ width: 200}}>
-            <Text bold>{item.title}</Text>
+       <HStack className="bg-white rounded-2xl shadow-md p-4 items-center gap-4">
+  <Animated.Image
+    source={{ uri: item.image }}
+    className="w-16 h-16 rounded-xl"
+    style={{ opacity: animatedOpacity }}
+    onLoadEnd={() => fadeIn({})}
+  />
 
-            <View style={styles.quantitySelector}>
-          
-        <FontAwesome
-          onPress={() => onValueChanged(item, item.quantity, -1)}
-          name="minus"
-          color="gray"
-          style={{ paddingLeft: 0 }}
-        />
+  <VStack className="flex-1">
+    <Text className="font-semibold text-base" numberOfLines={1}>
+      {item.title}
+    </Text>
 
-        <Text style={styles.quantity}>{item.quantity}</Text>
-        <FontAwesome
-          onPress={() => onValueChanged(item, item.quantity, +1)}
-          name="plus"
-          color="gray"
-          style={{ padding: 5 }}
-        />
-      </View>
-          </VStack>
-          <HStack>
-             <Text style={styles.quantity}>
-              {item.quantity} * {Formatter.currency(item.price)} 
-              = {Formatter.currency(item.quantity*item.price)} </Text>
+    {/* Quantity selector */}
+    <HStack className="items-center gap-4 mt-2">
+      <FontAwesome
+        onPress={() => onValueChanged(item, item.quantity, -1)}
+        name="minus-circle"
+        size={20}
+        color="gray"
+      />
+      <Text className="font-medium text-lg">{item.quantity}</Text>
+      <FontAwesome
+        onPress={() => onValueChanged(item, item.quantity, +1)}
+        name="plus-circle"
+        size={20}
+        color="gray"
+      />
+    </HStack>
+  </VStack>
 
-    <Button  style={{ paddingLeft: 10, marginTop: 0}} 
-        onPress={() => removeProduct(item)}
-        size="xs" variant="link" action="primary"
-             >
-               <Icon as={CloseIcon} /></Button>
-            </HStack>       
+  {/* Price + delete */}
+  <VStack className="items-end gap-2">
+    <Text className="font-medium text-sm text-gray-600">
+      {Formatter.currency(item.price)} x {item.quantity}
+    </Text>
+    <Text className="font-bold text-base text-gray-800">
+      {Formatter.currency(item.quantity * item.price)}
+    </Text>
+    <Button
+      onPress={() => removeProduct(item)}
+      size="sm"
+      variant="link"
+      action="negative"
+    >
+      <Icon as={CloseIcon} />
+    </Button>
+  </VStack>
+</HStack>
 
-        
-          
-        </HStack>
       )}
       ListFooterComponent={() => (
             <>
