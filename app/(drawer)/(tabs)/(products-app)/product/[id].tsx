@@ -25,8 +25,10 @@ import { useCameraStore } from '@/presentation/store/useCameraStore';
 import { RefreshControl } from 'react-native-gesture-handler';
 import React from 'react';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { CheckIcon } from '@/components/ui/icon';
-import { useCart } from '@/presentation/store/cartStore';
+import { CheckIcon, Icon } from '@/components/ui/icon';
+import { useCartStore } from '@/presentation/store/cartStore';
+import { ShoppingCart } from 'lucide-react-native';
+import { CartProduct } from '@/interfaces/product.interface';
 
 const ProductScreen = () => {
   const { selectedImages, clearImages } = useCameraStore();
@@ -36,7 +38,24 @@ const ProductScreen = () => {
 
   const { productQuery, productMutation } = useProduct(`${id}`);
 
-   const addProduct = useCart((state) => state.addProduct);
+  const addProductToCart = useCartStore( state => state.addProductTocart );
+
+  const addToCart = () => {
+   
+    const cartProduct: CartProduct = {
+      id: product.id,
+      slug: product.slug,
+      title: product.title,
+      price: product.price,
+      quantity: 1,
+      size: product.sizes[0],
+      image: product.images[0]
+    }
+
+    addProductToCart(cartProduct);
+
+
+  };
 
   useEffect(() => {
     return () => {
@@ -77,12 +96,6 @@ const ProductScreen = () => {
 
   const product = productQuery.data!;
   
-
-
-    const addToCart = () => {
-    addProduct(product);
-  };
-
 
   return (
     <Formik initialValues={product} onSubmit={ (productLike) => 
@@ -191,18 +204,24 @@ const ProductScreen = () => {
               }}
             >
             
-               <Button size="md" 
+               <Button 
+              size="md" 
                   variant="solid" 
                   action="primary"
                   onPress={() => handleSubmit()}>
                   <ButtonIcon as={CheckIcon} className="mr-2" />
             <ButtonText>Guardar</ButtonText>
           </Button>
-        <Button size="md" 
+        <Button 
+                  style={{
+                marginTop: 5,
+              }}
+                  size="md" 
                   variant="outline" 
                   action="primary"
                   className="px-4 py-2 mr-0 mb-3 sm:mr-3 sm:mb-0 sm:flex-1"
          onPress={ () => addToCart() }>
+          <Icon as={ShoppingCart} />
           <ButtonText>Add to cart</ButtonText>
         </Button>
     

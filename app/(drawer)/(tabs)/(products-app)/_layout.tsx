@@ -7,14 +7,15 @@ import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
 import LogoutIconButton from '@/presentation/auth/components/LogoutIconButton';
 import React from 'react';
 import { Icon } from '@/components/ui/icon';
-import { useCart } from '@/presentation/store/cartStore';
+import { useCartStore } from '@/presentation/store/cartStore';
 import { ShoppingCart } from 'lucide-react-native';
 
 const CheckAuthenticationLayout = () => {
   const { status, checkStatus } = useAuthStore();
   const backgroundColor = useThemeColor({}, 'background');
 
-  const cartItemsNum = useCart((state) => state.items.length);
+   const cartItemsNum = useCartStore( state => state.cart.length );
+
 
   useEffect(() => {
     checkStatus();
@@ -77,6 +78,7 @@ const CheckAuthenticationLayout = () => {
         name="cart/index"
         options={{
           title: 'Carrito',
+          presentation: 'modal'
         }}
       />
     </Stack>

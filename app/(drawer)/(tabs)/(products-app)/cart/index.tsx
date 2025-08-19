@@ -1,22 +1,37 @@
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
-import { useCart } from "@/presentation/store/cartStore";
+import { useCartStore } from "@/presentation/store/cartStore";
 import { Redirect, useRouter } from "expo-router";
 import React from "react";
-import {FlatList } from "react-native";
+import {FlatList, Platform, View, StyleSheet } from "react-native";
 import { Text } from '@/components/ui/text';
 import { Formatter } from "@/helpers/formatter";
 import { Animated } from 'react-native';
 import { useAnimation } from "@/presentation/theme/hooks/useAnimation";
+import { StatusBar } from "expo-status-bar";
+import { FontAwesome } from "@expo/vector-icons";
+import { CartProduct } from "@/interfaces/product.interface";
+import { CloseIcon, Icon } from "@/components/ui/icon";
+import Checkout from "./checkout";
 
 
 export default function CartScreen() {
 
     const { animatedOpacity, fadeIn } = useAnimation();
 
-  const items = useCart((state) => state.items);
-  const resetCart = useCart((state) => state.resetCart);
+  const productsInCart = useCartStore( state => state.cart );
+
+  const updateProductQuantity = useCartStore( state => state.updateProductQuantity );
+  const removeProduct = useCartStore( state => state.removeProduct );
+
+    const onValueChanged = ( product: CartProduct, quantity: number, value: number ) => {
+    
+    if ( quantity + value < 1 ) return;
+
+    updateProductQuantity( product, quantity + value );
+  }
+
 
 //  const { initPaymentSheet, presentPaymentSheet } = useStripe();
 /*
@@ -89,37 +104,104 @@ export default function CartScreen() {
     // openPaymentSheet();
   };
 
-  if (items.length === 0) {
+  if (productsInCart.length === 0) {
     return <Redirect href={'/'} />;
   }
 
   return (
-    <FlatList
-      data={items}
+    <><FlatList
+      data={productsInCart}
       contentContainerClassName="gap-2 max-w-[960px] w-full mx-auto p-2"
       renderItem={({ item }) => (
 
         <HStack className="bg-white p-3">
-                         <Animated.Image
-                          source={{ uri: item.product.images[0] }}
-                          style={{ height: 60, width: 60, paddingRight: 20, opacity: animatedOpacity }}
-                           onLoadEnd={() => {
-                              fadeIn({});
-                      }}
-                        />
-                              
-          <VStack space="sm">
-            <Text bold>{item.product.title}</Text>
-            <Text>{Formatter.currency(item.product.price)}</Text>
+          <Animated.Image
+            source={{ uri: item.image }}
+            style={{ height: 60, width: 60, paddingRight: 20, opacity: animatedOpacity }}
+            onLoadEnd={() => {
+              fadeIn({});
+            } } />
+      
+     
+          <VStack space="lg" style={{ width: 200}}>
+            <Text bold>{item.title}</Text>
+
+            <View style={styles.quantitySelector}>
+          
+        <FontAwesome
+          onPress={() => onValueChanged(item, item.quantity, -1)}
+          name="minus"
+          color="gray"
+          style={{ paddingLeft: 0 }}
+        />
+
+        <Text style={styles.quantity}>{item.quantity}</Text>
+        <FontAwesome
+          onPress={() => onValueChanged(item, item.quantity, +1)}
+          name="plus"
+          color="gray"
+          style={{ padding: 5 }}
+        />
+      </View>
           </VStack>
-          <Text className="ml-auto">{item.quantity}</Text>
+          <HStack>
+             <Text style={styles.quantity}>
+              {item.quantity} * {Formatter.currency(item.price)} 
+              = {Formatter.currency(item.quantity*item.price)} </Text>
+
+    <Button  style={{ paddingLeft: 10, marginTop: 0}} 
+        onPress={() => removeProduct(item)}
+        size="xs" variant="link" action="primary"
+             >
+               <Icon as={CloseIcon} /></Button>
+            </HStack>       
+
+        
+          
         </HStack>
       )}
       ListFooterComponent={() => (
-        <Button onPress={onCheckout}>
-          <ButtonText>Checkout</ButtonText>
-        </Button>
-      )}
-    />
+            <>
+            <Checkout/>
+            <Button onPress={onCheckout}>
+            <ButtonText>Checkout</ButtonText>
+          </Button></>
+      )} /><StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} /></>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 5,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: {
+    width: 75,
+    aspectRatio: 1,
+    alignSelf: 'center',
+    marginRight: 10,
+  },
+  title: {
+    fontWeight: '500',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  subtitleContainer: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  quantitySelector: {
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  quantity: {
+    fontWeight: '500',
+    fontSize: 15,
+  },
+});

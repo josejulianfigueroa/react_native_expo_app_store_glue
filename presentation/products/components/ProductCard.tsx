@@ -10,15 +10,36 @@ import { Heading } from '@/components/ui/heading';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Formatter } from '@/helpers/formatter';
- 
+import { ShoppingCart } from 'lucide-react-native';
+ import { Icon } from '@/components/ui/icon';
+import { useCartStore } from '@/presentation/store/cartStore';
+import { CartProduct } from '@/interfaces/product.interface';
 interface Props {
   product: Product;
 }
 
 export const ProductCard = ({ product }: Props) => {
-
+ 
    const { animatedOpacity, fadeIn } = useAnimation();
    
+   const addProductToCart = useCartStore( state => state.addProductTocart );
+ 
+   const addToCart = () => {
+    
+     const cartProduct: CartProduct = {
+       id: product.id,
+       slug: product.slug,
+       title: product.title,
+       price: product.price,
+       quantity: 1,
+       size: product.sizes[0],
+       image: product.images[0]
+     }
+ 
+     addProductToCart(cartProduct);
+ 
+   };
+
   return (
     <ThemedView
       style={{
@@ -47,8 +68,8 @@ export const ProductCard = ({ product }: Props) => {
         )}
 
         <ThemedText
-          numberOfLines={2}
-          style={{ textAlign: 'center' }}
+          numberOfLines={3}
+          style={{ textAlign: 'center', height: 50 }}
           darkColor={'black'}
         >
           {product.title}
@@ -57,7 +78,9 @@ export const ProductCard = ({ product }: Props) => {
             {Formatter.currency(product.price)}
           </Heading>
           <Box className="flex-col sm:flex-row">
-        <Button className="px-4 py-2 mr-0 mb-3 sm:mr-3 sm:mb-0 sm:flex-1">
+        <Button className="px-4 py-2 mr-0 mb-3 sm:mr-3 sm:mb-0 sm:flex-1"
+        onPress={ () => addToCart() }>
+           <Icon className="text-typography-100" as={ShoppingCart} />
           <ButtonText size="sm">Add to cart</ButtonText>
         </Button>
     

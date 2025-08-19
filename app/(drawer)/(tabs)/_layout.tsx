@@ -25,37 +25,40 @@ const TabsLayout = () => {
       }}
     > 
       <Tabs.Screen
-        name="(products-app)"
+        name="inicio/index"
         options={{
-          title: '',
+          title: 'Usuario',
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="grid-outline" color={color} />
+             <Ionicons size={28} name="person-outline" color={color} />
           ),
         }}
-         listeners={{
+    listeners={{
             tabPress: (e) => {
+              e.preventDefault();
               onToggleDrawer();
     },
   }}
       />
 
       <Tabs.Screen
-        name="inicio/index"
+        name="(products-app)"
         options={{
-          title: '',
+          title: 'Inicio',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="home-outline" color={color} />
+             <Ionicons size={28} name="home-outline" color={color} />
           ),
         }}
+             
       />
 
       <Tabs.Screen
-        name="favorites/index"
+        name="ordenes/index"
         options={{
-          title: '',
+          title: 'Ordenes',
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="star-outline" color={color} />
+            <Ionicons size={28} name="list-outline" color={color} />
           ),
         }}
       />

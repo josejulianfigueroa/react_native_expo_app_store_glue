@@ -1,10 +1,14 @@
 import React from 'react';
 import { Redirect } from 'expo-router';
+import { View } from 'react-native';
 
 
 const Inicio = () => {
 
- return <Redirect href="/(drawer)/(tabs)/(products-app)/(home)" />;
+ return (
+    <View>
+        </View>
+ );
 };
 
 export default Inicio;

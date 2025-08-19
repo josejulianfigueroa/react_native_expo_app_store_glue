@@ -21,8 +21,8 @@ const DrawerLayout = () => {
         name="(tabs)" // This is the name of the page and must match the url from root
         options={{
           headerShown: false,
-          drawerLabel: 'Productos',
-          title: 'Productos',
+          drawerLabel: 'Inicio',
+          title: 'Inicio',
 
           drawerIcon: ({ color, size }) => (
             <Ionicons name="albums-outline" size={size} color={color} />
@@ -33,7 +33,7 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="user/index" // This is the name of the page and must match the url from root
         options={{
-          drawerLabel: 'Usuario',
+          drawerLabel: 'Perfil',
           title: 'Usuario',
 
           drawerIcon: ({ color, size }) => (
