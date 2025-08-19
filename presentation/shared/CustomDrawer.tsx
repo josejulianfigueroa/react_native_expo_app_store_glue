@@ -19,15 +19,16 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
                 >
                   <Image
                     source={require('../../assets/images/no-product-image.png')}
-                    style={{ width: 300, height: 300 }}
+                    style={{ width: 300, height: 300, bottom: 10 }}
                   />
                 </View>
         </View>
       </View>
 
       {/* Draweritems */}
-
+  <View style={{ flex: 1, paddingTop: 220 }}>
       <DrawerItemList {...props} />
+      </View>
     </DrawerContentScrollView>
   );
 };

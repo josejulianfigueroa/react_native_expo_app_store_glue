@@ -6,7 +6,11 @@ import { ThemedText } from '@/presentation/theme/components/ThemedText';
 import { ThemedView } from '@/presentation/theme/components/ThemedView';
 import { useAnimation } from '@/presentation/theme/hooks/useAnimation';
 import React from 'react';
-
+import { Heading } from '@/components/ui/heading';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import { Formatter } from '@/helpers/formatter';
+ 
 interface Props {
   product: Product;
 }
@@ -49,6 +53,15 @@ export const ProductCard = ({ product }: Props) => {
         >
           {product.title}
         </ThemedText>
+          <Heading size="md" className="mb-4"   style={{ textAlign: 'right' }}>
+            {Formatter.currency(product.price)}
+          </Heading>
+          <Box className="flex-col sm:flex-row">
+        <Button className="px-4 py-2 mr-0 mb-3 sm:mr-3 sm:mb-0 sm:flex-1">
+          <ButtonText size="sm">Add to cart</ButtonText>
+        </Button>
+    
+      </Box>
       </TouchableOpacity>
     </ThemedView>
   );

@@ -13,7 +13,7 @@ import ThemedLink from '@/presentation/theme/components/ThemedLink';
 import { ThemedText } from '@/presentation/theme/components/ThemedText';
 import ThemedTextInput from '@/presentation/theme/components/ThemedTextInput';
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
-import { useAuthStore } from '@/presentation/auth/store/useAuthStore';
+import { useAuthStore } from '@/presentation/store/useAuthStore';
 import React from 'react';
 import { Button, ButtonText } from '@/components/ui/button';
 

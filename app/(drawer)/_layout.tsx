@@ -1,5 +1,3 @@
-
-import LogoutIconButton from '@/presentation/auth/components/LogoutIconButton';
 import CustomDrawer from '@/presentation/shared/CustomDrawer';
 import { Ionicons } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
@@ -61,7 +59,7 @@ const DrawerLayout = () => {
           drawerLabel: 'Cerrar Sesión',
           title: 'cerrar',
           drawerIcon: ({ color, size }) => (
-            <LogoutIconButton />
+             <Ionicons name="log-out-outline" size={24} color={color} />
           ),
         }}
       />

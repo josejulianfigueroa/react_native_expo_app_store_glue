@@ -1,8 +1,8 @@
 export class Formatter {
   public static currency(value: number): string {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('es-CL', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'CLP',
     }).format(value);
   }
 }

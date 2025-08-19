@@ -26,6 +26,7 @@ import { RefreshControl } from 'react-native-gesture-handler';
 import React from 'react';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { CheckIcon } from '@/components/ui/icon';
+import { useCart } from '@/presentation/store/cartStore';
 
 const ProductScreen = () => {
   const { selectedImages, clearImages } = useCameraStore();
@@ -34,6 +35,8 @@ const ProductScreen = () => {
   const navigation = useNavigation();
 
   const { productQuery, productMutation } = useProduct(`${id}`);
+
+   const addProduct = useCart((state) => state.addProduct);
 
   useEffect(() => {
     return () => {
@@ -73,6 +76,13 @@ const ProductScreen = () => {
   }
 
   const product = productQuery.data!;
+  
+
+
+    const addToCart = () => {
+    addProduct(product);
+  };
+
 
   return (
     <Formik initialValues={product} onSubmit={ (productLike) => 
@@ -188,6 +198,14 @@ const ProductScreen = () => {
                   <ButtonIcon as={CheckIcon} className="mr-2" />
             <ButtonText>Guardar</ButtonText>
           </Button>
+        <Button size="md" 
+                  variant="outline" 
+                  action="primary"
+                  className="px-4 py-2 mr-0 mb-3 sm:mr-3 sm:mb-0 sm:flex-1"
+         onPress={ () => addToCart() }>
+          <ButtonText>Add to cart</ButtonText>
+        </Button>
+    
             </View>
           </ScrollView>
         </KeyboardAvoidingView>

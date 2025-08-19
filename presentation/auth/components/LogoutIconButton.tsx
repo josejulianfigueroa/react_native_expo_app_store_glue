@@ -1,6 +1,6 @@
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
 import { View, Text } from 'react-native';
-import { useAuthStore } from '../store/useAuthStore';
+import { useAuthStore } from '../../store/useAuthStore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
