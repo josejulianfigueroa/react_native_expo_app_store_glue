@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   KeyboardAvoidingView,
@@ -25,12 +25,38 @@ import { useCameraStore } from '@/presentation/store/useCameraStore';
 import { RefreshControl } from 'react-native-gesture-handler';
 import React from 'react';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { CheckIcon, Icon } from '@/components/ui/icon';
+import { CheckIcon, Icon, InfoIcon } from '@/components/ui/icon';
 import { useCartStore } from '@/presentation/store/cartStore';
 import { ShoppingCart } from 'lucide-react-native';
 import { CartProduct } from '@/interfaces/product.interface';
+import { Alert, AlertIcon, AlertText } from '@/components/ui/alert';
+import { Toast, ToastDescription, ToastTitle, useToast } from '@/components/ui/toast';
 
 const ProductScreen = () => {
+  const toast = useToast()
+  const [toastId, setToastId] = React.useState(0)
+
+  const showNewToast = () => {
+    const newId = Math.random()
+    setToastId(newId)
+    toast.show({
+      id: newId.toString(),
+      placement: "top",
+      duration: 3000,
+      render: ({ id }) => {
+        const uniqueToastId = "toast-" + id
+        return (
+          <Toast nativeID={uniqueToastId} action="success" variant="solid">
+            <ToastTitle>Enhorabuena!</ToastTitle>
+            <ToastDescription>
+              Producto agregado al carrito!
+            </ToastDescription>
+          </Toast>
+        )
+      },
+    })
+  }
+  
   const { selectedImages, clearImages } = useCameraStore();
 
   const { id } = useLocalSearchParams();
@@ -53,8 +79,9 @@ const ProductScreen = () => {
     }
 
     addProductToCart(cartProduct);
-
-
+     if (!toast.isActive(toastId.toString())) {
+      showNewToast()
+    }
   };
 
   useEffect(() => {
@@ -98,6 +125,7 @@ const ProductScreen = () => {
   
 
   return (
+    
     <Formik initialValues={product} onSubmit={ (productLike) => 
     productMutation.mutate({
       ...productLike,
@@ -224,7 +252,7 @@ const ProductScreen = () => {
           <Icon as={ShoppingCart} />
           <ButtonText>Add to cart</ButtonText>
         </Button>
-    
+
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -234,9 +262,3 @@ const ProductScreen = () => {
 };
 export default ProductScreen;
 
-/**
- * 
- *   <ThemedButton icon="save-outline" onPress={() => handleSubmit()}>
-                Guardar
-              </ThemedButton>
- */

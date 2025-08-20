@@ -14,12 +14,38 @@ import { ShoppingCart } from 'lucide-react-native';
  import { Icon } from '@/components/ui/icon';
 import { useCartStore } from '@/presentation/store/cartStore';
 import { CartProduct } from '@/interfaces/product.interface';
+import { Toast, ToastDescription, ToastTitle, useToast } from '@/components/ui/toast';
 interface Props {
   product: Product;
 }
 
 export const ProductCard = ({ product }: Props) => {
  
+  const toast = useToast()
+  const [toastId, setToastId] = React.useState(0)
+
+  const showNewToast = () => {
+    const newId = Math.random()
+    setToastId(newId)
+    toast.show({
+      id: newId.toString(),
+      placement: "top",
+      duration: 3000,
+      render: ({ id }) => {
+        const uniqueToastId = "toast-" + id
+        return (
+          <Toast nativeID={uniqueToastId} action="success" variant="solid">
+            <ToastTitle>Enhorabuena!</ToastTitle>
+            <ToastDescription>
+              Producto agregado al carrito!
+            </ToastDescription>
+          </Toast>
+        )
+      },
+    })
+  }
+  
+  
    const { animatedOpacity, fadeIn } = useAnimation();
    
    const addProductToCart = useCartStore( state => state.addProductTocart );
@@ -37,7 +63,9 @@ export const ProductCard = ({ product }: Props) => {
      }
  
      addProductToCart(cartProduct);
- 
+   if (!toast.isActive(toastId.toString())) {
+      showNewToast()
+    }
    };
 
   return (

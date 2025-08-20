@@ -52,11 +52,13 @@ const TabsLayout = () => {
         }}
              
       />
+      <Tabs.Screen name="ordenes/[id]" options={{ href: null }} />
 
       <Tabs.Screen
-        name="ordenes/index"
+        name="ordenes"
         options={{
           title: 'Ordenes',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons size={28} name="list-outline" color={color} />
           ),
