@@ -5,10 +5,11 @@ import React from 'react';
 
 const PushApp = () => {
   const { expoPushToken, notifications } = usePushNotifications();
+  console.log('expoPushToken', expoPushToken);
 
   return (
     <View style={{ marginHorizontal: 10, marginTop: 5 }}>
-      {/* <ThemedText>Token: {expoPushToken}</ThemedText> */}
+      { <ThemedText>Token: {expoPushToken}</ThemedText> }
 
 
       <FlatList

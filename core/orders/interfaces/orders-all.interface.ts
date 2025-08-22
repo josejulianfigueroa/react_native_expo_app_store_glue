@@ -16,6 +16,7 @@ export interface OrdersAll {
     isPaid:        boolean;
     paidAt:        Date;
     createAt:      Date;
+    status:         string;
     transactionId?: string;
     user?:         User;
     orderItem?:    OrderItem[];

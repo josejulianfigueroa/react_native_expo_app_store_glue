@@ -4,7 +4,7 @@ import OrderListItem from '@/presentation/orders/components/OrderListItem';
 import { useOrders } from '@/presentation/orders/hooks/useOrders';
 import { Stack } from 'expo-router';
 
-export default function OrdersScreen() {
+export default function ArchiveScreen() {
 
   const { ordersQuery } = useOrders();
 
@@ -20,7 +20,7 @@ export default function OrdersScreen() {
   }
 
   return (<>
-          <Stack.Screen options={{ title: 'Ordenes' }} />
+         
     <FlatList
       data={ordersQuery.data?.orders}
       renderItem={({ item }) => <OrderListItem order={item} />}
@@ -29,3 +29,4 @@ export default function OrdersScreen() {
   );
 }
 
+/** <Stack.Screen options={{ title: 'Ordenes' }} /> */

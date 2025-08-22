@@ -17,6 +17,22 @@ const TabsLayout = () => {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: 'indigo',
+           /*     tabBarStyle: {
+                    borderTopLeftRadius: 50,
+                    borderTopRightRadius: 50,
+                    borderBottomLeftRadius: 50,
+                    borderBottomRightRadius: 50,
+                    marginHorizontal: 20,
+                    height: 60,
+                    position: 'absolute',
+                    bottom: 30,
+                    backgroundColor: 'white',
+                    shadowColor: '#1a1a1a',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 5,
+                    elevation: 5
+                }*/
         // headerShown: false,
         // tabBarStyle: {
         //   backgroundColor: 'black',
@@ -52,7 +68,6 @@ const TabsLayout = () => {
         }}
              
       />
-      <Tabs.Screen name="ordenes/[id]" options={{ href: null }} />
 
       <Tabs.Screen
         name="ordenes"

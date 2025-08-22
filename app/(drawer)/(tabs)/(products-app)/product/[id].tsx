@@ -47,7 +47,7 @@ const ProductScreen = () => {
         const uniqueToastId = "toast-" + id
         return (
           <Toast nativeID={uniqueToastId} action="success" variant="solid">
-            <ToastTitle>Enhorabuena!</ToastTitle>
+           
             <ToastDescription>
               Producto agregado al carrito!
             </ToastDescription>
@@ -56,7 +56,7 @@ const ProductScreen = () => {
       },
     })
   }
-  
+  /** <ToastTitle>Enhorabuena!</ToastTitle> */
   const { selectedImages, clearImages } = useCameraStore();
 
   const { id } = useLocalSearchParams();

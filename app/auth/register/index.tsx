@@ -9,23 +9,23 @@ import {
   ScrollView,
   useWindowDimensions,
   View,
-} from 'react-native';
+ Dimensions, ImageBackground, Image, 
+ Platform} from 'react-native';
+import "@/global.css";
 
 const RegisterScreen = () => {
   const { height } = useWindowDimensions();
   const backgroundColor = useThemeColor({}, 'background');
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-      <ScrollView
-        style={{
+  
+                 <ScrollView  
+                   style={{
           paddingHorizontal: 40,
-          backgroundColor: backgroundColor,
-        }}
-      >
+        }}>
         <View
           style={{
-            paddingTop: height * 0.35,
+            paddingTop: height * 0.05,
           }}
         >
           <ThemedText type="title">Crear cuenta</ThemedText>
@@ -80,7 +80,6 @@ const RegisterScreen = () => {
           </ThemedLink>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
   );
 };
 export default RegisterScreen;

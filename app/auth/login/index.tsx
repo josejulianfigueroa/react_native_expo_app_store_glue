@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import {
   Alert,
+  Dimensions,
+  ImageBackground,
   KeyboardAvoidingView,
   ScrollView,
   useWindowDimensions,
   View,
+  Image,
+  Platform
 } from 'react-native';
 
 import { router } from 'expo-router';
@@ -15,7 +19,7 @@ import ThemedTextInput from '@/presentation/theme/components/ThemedTextInput';
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
 import { useAuthStore } from '@/presentation/store/useAuthStore';
 import React from 'react';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button, ButtonSpinner, ButtonText } from '@/components/ui/button';
 
 const LoginScreen = () => {
   const { login } = useAuthStore();
@@ -31,6 +35,9 @@ const LoginScreen = () => {
     password: '',
   });
 
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   const onLogin = async () => {
     const { email, password } = form;
 
@@ -42,6 +49,7 @@ const LoginScreen = () => {
 
     setIsPosting(true);
     const wasSuccessful = await login(email, password);
+    await delay(3000);
     setIsPosting(false);
 
     if (wasSuccessful) {
@@ -53,16 +61,14 @@ const LoginScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-      <ScrollView
-        style={{
+    
+                 <ScrollView  
+                   style={{
           paddingHorizontal: 40,
-          backgroundColor: backgroundColor,
-        }}
-      >
+        }}>
         <View
           style={{
-            paddingTop: height * 0.35,
+            paddingTop: height * 0.05,
           }}
         >
           <ThemedText type="title">Ingresar</ThemedText>
@@ -101,7 +107,11 @@ const LoginScreen = () => {
                   action="primary"
                   disabled={isPosting}
                   onPress={() => onLogin()}>
-            <ButtonText>Submit</ButtonText>
+          <ButtonText>
+            {isPosting ? "ingresando..." : "Entrar"}
+          </ButtonText>
+  
+          {isPosting && <ButtonSpinner />}
           </Button>
         {/* Spacer */}
         <View style={{ marginTop: 50 }} />
@@ -119,8 +129,9 @@ const LoginScreen = () => {
             Crear cuenta
           </ThemedLink>
         </View>
+       
       </ScrollView>
-    </KeyboardAvoidingView>
+
   );
 };
 export default LoginScreen;

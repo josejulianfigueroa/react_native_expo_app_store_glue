@@ -6,6 +6,7 @@ export interface Order {
     itemsInOrder: number;
     isPaid:       boolean;
     paidAt:       Date;
+    status: string;
     createAt:     Date;
     user:         User;
     orderItem:    OrderItem[];

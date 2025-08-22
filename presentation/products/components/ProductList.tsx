@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, View, Text } from 'react-native';
 
 import { Product } from '@/core/products/interfaces/product.interface';
 import { ProductCard } from './ProductCard';
 import { useQueryClient } from '@tanstack/react-query';
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
-import { useProducts } from '../hooks/useProducts';
 import React from 'react';
+import SearchBar from './SearchBar';
+import Filter from './Filter';
+import { Category } from '@/interfaces/category.interface';
+import { useLocalSearchParams } from 'expo-router';
 
 interface Props {
   products: Product[];
@@ -14,6 +17,9 @@ interface Props {
 }
 
 const ProductList = ({ products, loadNextPage }: Props) => {
+const { category, query } = useLocalSearchParams<{query: string; category: string}>()
+
+  
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const queryClient = useQueryClient();
@@ -30,7 +36,10 @@ const ProductList = ({ products, loadNextPage }: Props) => {
     setIsRefreshing(false);
   };
 
-  
+  const categories: Category[] = [{
+    id: 1,
+    name: "Burgers"
+  }]
   return (
     <FlatList
       data={products}
@@ -51,6 +60,13 @@ const ProductList = ({ products, loadNextPage }: Props) => {
             <ActivityIndicator size={40} color={primaryColor} />
           </View>
         )}
+             ListHeaderComponent={() => (
+              <View className="my-5 gap-5">
+                        <SearchBar />
+                            <Filter categories={categories!} />
+                            </View>
+                )}
+
     />
   );
 };
