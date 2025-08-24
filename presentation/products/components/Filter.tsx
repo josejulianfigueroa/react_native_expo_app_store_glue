@@ -1,29 +1,27 @@
 import {StyleSheet, Text, FlatList, TouchableOpacity, Platform} from 'react-native';
 import {router, useLocalSearchParams} from "expo-router";
 import {useState} from "react";
-import cn from "clsx";
 import { Category } from '@/interfaces/category.interface';
 import React from 'react';
 
 const Filter = ({ categories }: { categories: Category[] }) => {
+    
     const searchParams = useLocalSearchParams();
     const [active, setActive] = useState(searchParams.category || '');
 
     const handlePress = (id: string) => {
         setActive(id);
-
-        if(id === 'all') router.setParams({ category: undefined });
+        if(id === '99') router.setParams({ category: undefined });
         else router.setParams({ category: id });
     };
 
     const filterData: (Category | { id: string; name: string })[] = categories
-        ? [{ id: 'all', name: 'All' }, ...categories]
-        : [{ id: 'all', name: 'All' }]
-
+        ? [{ id: '99', name: 'All' }, ...categories]
+        : [{ id: '99', name: 'All' }]
 return (
     <FlatList
       data={filterData}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item.id}
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.listContainer}
@@ -64,7 +62,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     minHeight: 36,
-     backgroundColor: "#F59E0B",
   },
   activeChip: {
     backgroundColor: "#F59E0B", // amber-500
