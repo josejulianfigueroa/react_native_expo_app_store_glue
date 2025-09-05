@@ -23,7 +23,7 @@ export const FAB = ({ style, iconName, onPress }: Props) => {
           height: 60,
 
           shadowColor: 'black',
-          backgroundColor: 'black',
+          backgroundColor: 'indigo',
           shadowOffset: {
             width: 0,
             height: 10,

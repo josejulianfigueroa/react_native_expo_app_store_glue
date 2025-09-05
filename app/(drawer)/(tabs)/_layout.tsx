@@ -17,6 +17,17 @@ const TabsLayout = () => {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: 'indigo',
+        tabBarStyle: {
+         backgroundColor: "white",
+         shadowColor: '#1a1a1a',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 5,
+                    elevation: 5,
+                    paddingTop: 10,
+                    
+                    
+        }
            /*     tabBarStyle: {
                     borderTopLeftRadius: 50,
                     borderTopRightRadius: 50,

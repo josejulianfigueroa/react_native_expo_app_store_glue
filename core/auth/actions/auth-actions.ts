@@ -1,14 +1,35 @@
 import { productsApi } from '@/core/api/productsApi';
 import { User } from '../interface/user';
 
+export interface Client {
+    id:            string;
+    fullName:      string;
+    rut:           string;
+    email:         string;
+    image:         string;
+    phone:         string;
+    isActive:      boolean;
+    emailVerified: boolean;
+    address:       string;
+    web:           string;
+    isOpen:        boolean;
+    activity:      string;
+    horario:       string;
+    createdAt:     Date;
+}
 export interface AuthResponse {
   id: string;
   email: string;
+  rut: string;
+  isActive: boolean;
   image: string;
+  emailVerified: boolean;
   fullName: string;
-  password?: string;
+  createdAt: string;
   role: string;
   token: string;
+  tokenPhone: string;
+  client: Client;
 }
 
 const returnUserToken = (
@@ -41,6 +62,27 @@ export const authLogin = async (email: string, password: string) => {
     const { data } = await productsApi.post<AuthResponse>('/auth/login', {
       email,
       password,
+      idClient: process.env.EXPO_PUBLIC_KEY_APP
+    });
+
+    return returnUserToken(data);
+  } catch (error) {
+    console.log(error);
+    // throw new Error('User and/or password not valid');
+    return null;
+  }
+};
+
+export const authRegister = async (email: string, password: string, fullName: string) => {
+  email = email.toLowerCase();
+
+  try {
+    const { data } = await productsApi.post<AuthResponse>('/auth/register', {
+      email,
+      password,
+      fullName,
+      rut:'',
+      idClient: process.env.EXPO_PUBLIC_KEY_APP
     });
 
     return returnUserToken(data);
@@ -61,4 +103,3 @@ export const authCheckStatus = async () => {
   }
 };
 
-// TODO: Tarea: Hacer el register

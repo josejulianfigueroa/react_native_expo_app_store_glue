@@ -13,7 +13,6 @@ export const useProducts = () => {
 
   return {
     productsQuery,
-
     // Methods
     loadNextPage: productsQuery.fetchNextPage
   };

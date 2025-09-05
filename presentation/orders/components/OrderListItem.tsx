@@ -23,7 +23,7 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
       ? order.id.toString().slice(0, 25) + '…' 
       : order.id
     } </Text>
-          <Text style={styles.time}>{dayjs(order.createAt).fromNow()}</Text>
+          <Text style={styles.time}>{dayjs(order.createdAt).fromNow()}</Text>
         </View>
 
         <Text style={styles.status}>Pagada</Text>

@@ -37,9 +37,4 @@ export default function RootLayout() {
                      </KeyboardAvoidingView>
   );
 
-}/*
- <ThemeProvider
-          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-        >
-   </ThemeProvider>
-   */
+}

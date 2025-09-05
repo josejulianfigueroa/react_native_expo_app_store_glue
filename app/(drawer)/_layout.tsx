@@ -10,11 +10,15 @@ const DrawerLayout = () => {
       screenOptions={{
         // headerShown: false,
         overlayColor: 'rgba(0,0,0,0.4)',
-        drawerActiveTintColor: 'indigo',
+        drawerActiveTintColor: 'white',
+        drawerInactiveTintColor: 'white', 
         headerShadowVisible: false,
         sceneStyle: {
           backgroundColor: 'white',
         },
+         drawerStyle: {
+      backgroundColor: 'indigo',  // Fondo índigo del drawer
+    },
       }}
     >
       <Drawer.Screen

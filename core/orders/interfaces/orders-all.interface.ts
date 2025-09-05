@@ -15,7 +15,7 @@ export interface OrdersAll {
     itemsInOrder:  number;
     isPaid:        boolean;
     paidAt:        Date;
-    createAt:      Date;
+    createdAt:      Date;
     status:         string;
     transactionId?: string;
     user?:         User;

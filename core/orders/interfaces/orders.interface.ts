@@ -7,7 +7,7 @@ export interface Order {
     isPaid:       boolean;
     paidAt:       Date;
     status: string;
-    createAt:     Date;
+    createdAt:     Date;
     user:         User;
     orderItem:    OrderItem[];
     orderAddress: OrderAddress[];
