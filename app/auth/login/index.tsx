@@ -23,6 +23,7 @@ import { Toast, ToastDescription, ToastTitle, useToast } from '@/components/ui/t
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import { Icon, CloseIcon, HelpCircleIcon } from '@/components/ui/icon';
+import { useClientOnlyValue } from '../../../components/useClientOnlyValue';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_REGEX = /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
@@ -237,10 +238,27 @@ const LoginScreen = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <ThemedText>¿No tienes cuenta?</ThemedText>
-        <ThemedLink href="/auth/register" style={{ marginHorizontal: 5 }}>
-          Crear cuenta
-        </ThemedLink>
+<View style={{ alignItems: "center", marginTop: 0 }}>
+  <View style={{ flexDirection: "row", marginVertical: 8 }}>
+    <ThemedText style={{ color: "#6B7280", fontSize: 14}}>¿No tienes cuenta? </ThemedText>
+    <ThemedLink 
+      href="/auth/register" 
+      style={{ color: "#2563EB", fontWeight: "300" , paddingTop: 5, fontSize: 14 }}
+    >
+      Crear cuenta
+    </ThemedLink>
+  </View>
+
+  <View style={{ flexDirection: "row", marginVertical: 8 }}>
+    <ThemedText style={{ color: "#6B7280",  fontSize: 14}}>¿Se te olvidó la clave? </ThemedText>
+    <ThemedLink 
+      href="/auth/olvido" 
+      style={{ color: "#2563EB", fontWeight: "300" , paddingTop: 5, fontSize: 14}}
+    >
+      Recuperar clave
+    </ThemedLink>
+  </View>
+</View>
       </View>
     </ScrollView>
   );

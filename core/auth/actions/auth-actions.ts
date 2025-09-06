@@ -73,6 +73,20 @@ export const authLogin = async (email: string, password: string) => {
   }
 };
 
+export const authValida = async (codigo: string) => {
+  codigo = codigo.toUpperCase();
+
+  try {
+    const { data } = await productsApi.get<AuthResponse>(`/auth/valida/${codigo}`);
+
+    return true;
+  } catch (error) {
+    console.log(error);
+    // throw new Error('User and/or password not valid');
+    return null;
+  }
+};
+
 export const authRegister = async (email: string, password: string, fullName: string) => {
   email = email.toLowerCase();
 
@@ -87,8 +101,22 @@ export const authRegister = async (email: string, password: string, fullName: st
 
     return returnUserToken(data);
   } catch (error) {
-    console.log(error);
-    // throw new Error('User and/or password not valid');
+    return null;
+  }
+};
+
+export const authOlvido = async (email: string, password: string) => {
+  email = email.toLowerCase();
+
+  try {
+    const { data } = await productsApi.post<AuthResponse>('/auth/olvido', {
+      email,
+      password,
+      idClient: process.env.EXPO_PUBLIC_KEY_APP
+    });
+
+    return true;
+  } catch (error) {
     return null;
   }
 };

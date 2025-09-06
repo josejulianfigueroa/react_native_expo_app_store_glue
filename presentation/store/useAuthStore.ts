@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { User } from '@/core/auth/interface/user';
-import { authCheckStatus, authLogin, authRegister } from '@/core/auth/actions/auth-actions';
+import { authCheckStatus, authLogin, authOlvido, authRegister } from '@/core/auth/actions/auth-actions';
 import { SecureStorageAdapter } from '@/helpers/adapters/secure-storage.adapter';
 
 export type AuthStatus = 'authenticated' | 'unauthenticated' | 'checking';

@@ -21,18 +21,15 @@ import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import { Icon, CloseIcon, HelpCircleIcon } from '@/components/ui/icon';
 import { router } from 'expo-router';
+import { authLogin, authOlvido } from '@/core/auth/actions/auth-actions';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_REGEX = /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-const FULLNAME_REGEX = /^[a-zA-ZÀ-ÿ\s'-]{2,}$/;
 
 const RegisterScreen = () => {
 
   const { height } = useWindowDimensions();
-   const { register } = useAuthStore();
   const [isPosting, setIsPosting] = useState(false);
- 
-
   const toast = useToast();
   const [toastId, setToastId] = React.useState(0);
 
@@ -111,26 +108,19 @@ const RegisterScreen = () => {
 const [form, setForm] = useState({
     email: '',
     password: '',
-    fullName: ''
+    password2: ''
   });
 
   const [errors, setErrors] = useState({
     email: '',
     password: '',
-    fullName: ''
+    password2: ''
   });
 
   const validateForm = () => {
     let valid = true;
-    const newErrors = { email: '', password: '', fullName: '' };
+    const newErrors = { email: '', password: '', password2: '' };
 
-    if (!form.fullName) {
-  newErrors.fullName = 'El nombre completo es obligatorio';
-  valid = false;
-} else if (!FULLNAME_REGEX.test(form.fullName)) {
-  newErrors.fullName = 'El nombre solo debe contener letras, espacios, apóstrofes o guiones';
-  valid = false;
-}
 
     if (!form.email) {
       newErrors.email = 'El correo es obligatorio';
@@ -148,25 +138,38 @@ const [form, setForm] = useState({
       valid = false;
     }
 
+     if (!form.password2) {
+      newErrors.password2 = 'La contraseña es obligatoria';
+      valid = false;
+    } else if (!PASSWORD_REGEX.test(form.password2)) {
+      newErrors.password2 = 'El password debe tener una mayúscula, una minúscula y un numero';
+      valid = false;
+    }
+
+    if (form.password && form.password2 && form.password !== form.password2) {
+    newErrors.password2 = 'Las contraseñas no coinciden';
+    valid = false;
+  }
+
     setErrors(newErrors);
     return valid;
   };
    const delay = (ms: any) => new Promise(resolve => setTimeout(resolve, ms));
   
-    const onRegister = async () => {
+    const onOlvido = async () => {
 
     if (!validateForm()) {
       return;
     }
   
       setIsPosting(true);
-      const { email, password, fullName } = form;
-      const wasSuccessful = await register(email, password, fullName)
+      const { email, password, password2 } = form;
+      const wasSuccessful = await authOlvido(email, password)
       await delay(3000);
       setIsPosting(false);
   
       if (wasSuccessful) {
-        router.replace('/');
+        router.replace('/auth/valida');
         return;
       }
       if (!toast.isActive(toastId.toString())) {
@@ -185,13 +188,13 @@ const [form, setForm] = useState({
             paddingTop: height * 0.05,
           }}
         >
-          <ThemedText type="title">Crear cuenta</ThemedText>
+          <ThemedText type="title">Reset Password</ThemedText>
           <ThemedText style={{ color: 'grey' }}>
-            Por favor crea una cuenta para continuar
+            Por favor, ingresa tu email y tu nuevo password y recibirás un código de validación
           </ThemedText>
         </View>
 
-        {/* Email , fullName y  Password */}
+        {/* Email , password2 y  Password */}
        <View style={{ marginTop: 20 }}>
         <ThemedTextInput
           placeholder="Correo electrónico"
@@ -213,30 +216,8 @@ const [form, setForm] = useState({
           </ThemedText>
         ) : null}
 
-
-      <ThemedTextInput
-          placeholder="Nombre Completo"
-          keyboardType="default"
-          autoCapitalize="none"
-          icon="person-outline"
-          value={form.fullName}
-          onChangeText={(value) => {
-            setForm({ ...form, fullName: value });
-            setErrors({ ...errors, fullName: '' });
-          }}
-          style={[
-            errors.fullName && { borderColor: '#e53935', borderWidth: 2 }
-          ]}
-        />
-        {errors.fullName ? (
-          <ThemedText style={{ color: '#e53935', marginBottom: 6, marginLeft: 4, fontSize: 13 }}>
-            {errors.fullName}
-          </ThemedText>
-        ) : null}
-
-
-        <ThemedTextInput
-          placeholder="Contraseña"
+<ThemedTextInput
+          placeholder="Nueva Password"
           secureTextEntry
           autoCapitalize="none"
           icon="lock-closed-outline"
@@ -254,6 +235,27 @@ const [form, setForm] = useState({
             {errors.password}
           </ThemedText>
         ) : null}
+
+
+         <ThemedTextInput
+          placeholder="Repetir Password"
+          secureTextEntry
+          autoCapitalize="none"
+          icon="lock-closed-outline"
+          value={form.password2}
+          onChangeText={(value) => {
+            setForm({ ...form, password2: value });
+            setErrors({ ...errors, password2: '' });
+          }}
+          style={[
+            errors.password2 && { borderColor: '#e53935', borderWidth: 2 }
+          ]}
+        />
+        {errors.password2 ? (
+          <ThemedText style={{ color: '#e53935', marginBottom: 6, marginLeft: 4, fontSize: 13 }}>
+            {errors.password2}
+          </ThemedText>
+        ) : null}
       </View>
 
         {/* Spacer */}
@@ -265,10 +267,10 @@ const [form, setForm] = useState({
         variant="solid"
         action="primary"
         disabled={isPosting}
-        onPress={onRegister}
+        onPress={onOlvido}
       >
         <ButtonText>
-          {isPosting ? "registrando..." : "Crear"}
+          {isPosting ? "enviando..." : "Enviar"}
         </ButtonText>
         {isPosting && <ButtonSpinner />}
       </Button>
@@ -277,7 +279,7 @@ const [form, setForm] = useState({
         <View style={{ marginTop: 50 }} />
 
         {/* Enlace a registro */}
-        <View style={{ alignItems: "center", marginTop: 0 }}>
+         <View style={{ alignItems: "center", marginTop: 0 }}>
   <View style={{ flexDirection: "row", marginVertical: 8 }}>
     <ThemedText style={{ color: "#6B7280",  fontSize: 14}}>¿Ya tienes cuenta? </ThemedText>
     <ThemedLink 
